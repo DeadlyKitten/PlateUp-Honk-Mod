@@ -13,9 +13,12 @@ namespace PlateUpHonk
     public class HonkPlugin : BaseUnityPlugin
     {
         private static AudioClip _honkClip;
+        private static HonkPlugin Instance;
 
         private void Awake()
         {
+            Instance = this;
+
             LoadAudioClip();
 
             var harmony = new Harmony("com.steven.plateup.honk");
@@ -75,6 +78,14 @@ namespace PlateUpHonk
             }
         }
 
-        public static void PlayHonk(Vector3 location) => AudioSource.PlayClipAtPoint(_honkClip, location);
+        public static void PlayHonk(Vector3 location)
+        {
+            if (_honkClip == null)
+            {
+                Instance.Logger.LogError("AudioClip is null!");
+                return;
+            }
+            AudioSource.PlayClipAtPoint(_honkClip, location);
+        }
     }
 }
