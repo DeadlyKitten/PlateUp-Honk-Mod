@@ -19,13 +19,13 @@ namespace PlateUpHonk
         {
             Instance = this;
 
-            LoadAudioClip();
+            ExtractAndLoadAudioFile();
 
             var harmony = new Harmony("com.steven.plateup.honk");
             harmony.PatchAll();
         }
 
-        private void LoadAudioClip()
+        private void ExtractAndLoadAudioFile()
         {
             var tempPath = Path.Combine(Path.GetTempPath(), "honk.mp3");
 
@@ -49,10 +49,10 @@ namespace PlateUpHonk
                 }
             }
 
-            StartCoroutine(LoadClip(tempPath));
+            StartCoroutine(LoadAudioClip(tempPath));
         }
 
-        private IEnumerator LoadClip(string filePath)
+        private IEnumerator LoadAudioClip(string filePath)
         {
             var loader = UnityWebRequestMultimedia.GetAudioClip(filePath, AudioType.MPEG);
             yield return loader.SendWebRequest();
